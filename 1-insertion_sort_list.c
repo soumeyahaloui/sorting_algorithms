@@ -1,41 +1,42 @@
-#include <stddef.h>
 #include "sort.h"
 
 /**
- * bubble_sort - Sorts an array of integers in ascending order using Bubble sort
+ * insertion_sort_list - Sorts a doubly linked list of integers in ascend order
+ *                        using Insertion sort algorithm
  *
- * @array: The array to be sorted
- * @size: Number of elements in @array
+ * @list: Pointer to the head of the doubly linked list
  */
-void bubble_sort(int *array, size_t size)
+void insertion_sort_list(listint_t **list)
 {
-	size_t i, j;
-	int temp;
-	int swapped;
-
-	if (array == NULL || size < 2)
+	if (list == NULL || *list == NULL || (*list)->next == NULL)
 		return;
 
-	for (i = 0; i < size - 1; i++)
+	listint_t *curr, *temp;
+
+	curr = (*list)->next;
+	while (curr != NULL)
 	{
-		swapped = 0;
-
-		for (j = 0; j < size - i - 1; j++)
+		temp = curr->prev;
+		while (temp != NULL && temp->n > curr->n)
 		{
-			if (array[j] > array[j + 1])
-			{
-				temp = array[j];
-				array[j] = array[j + 1];
-				array[j + 1] = temp;
-				swapped = 1;
+			if (temp->prev != NULL)
+				temp->prev->next = curr;
+			else
+				*list = curr;
 
-				/* Print the array after each swap */
-				print_array(array, size);
-			}
+			if (curr->next != NULL)
+				curr->next->prev = temp;
+
+			temp->next = curr->next;
+			curr->prev = temp->prev;
+			curr->next = temp;
+			temp->prev = curr;
+
+			print_list(*list);
+
+			temp = curr->prev;
 		}
 
-		/* If no two elements were swapped in the inner loop, the array is already sorted */
-		if (swapped == 0)
-			break;
+		curr = curr->next;
 	}
 }

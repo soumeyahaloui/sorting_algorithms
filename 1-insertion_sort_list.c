@@ -8,21 +8,17 @@
  */
 void swap_nodes(listint_t **h, listint_t **n1, listint_t *n2)
 {
-	/* Update n1's next and n2's next if n2 is not NULL */
 	if ((*n1)->next != NULL)
 		(*n1)->next->prev = n2;
 	if (n2->next != NULL)
 		n2->next->prev = *n1;
 
-	/* Update n1's prev and n2's prev */
 	n2->prev = (*n1)->prev;
 	(*n1)->prev = n2;
 
-	/* Update n1's next and n2's next */
 	(*n1)->next = n2->next;
 	n2->next = *n1;
 
-	/* Update head if n1 was the head */
 	if (n2->prev == NULL)
 		*h = n2;
 }
